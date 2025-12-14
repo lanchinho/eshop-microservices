@@ -360,4 +360,4 @@ MigrationBackup/
 .ionide/
 
 # Visual Studio settings...
-
+.vs/
