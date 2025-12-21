@@ -1,11 +1,14 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container.
 var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config =>
 {
-	config.RegisterServicesFromAssembly(assembly);
-	config.LicenseKey = builder.Configuration.GetValue<string>("MediatR:LicenseKey");
+    config.RegisterServicesFromAssembly(assembly);
+    config.LicenseKey = builder.Configuration.GetValue<string>("MediatR:LicenseKey");
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
@@ -14,15 +17,21 @@ builder.Services.AddCarter();
 
 builder.Services.AddMarten(opts =>
 {
-	opts.Connection(builder.Configuration.GetConnectionString("Database")!);	
+    opts.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+if (builder.Environment.IsDevelopment())
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
 
-builder.Services.AddValidatorsFromAssembly(assembly);
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
+builder.Services
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen()
+    .AddValidatorsFromAssembly(assembly)
+    .AddExceptionHandler<GlobalExceptionHandler>()
+    .AddProblemDetails();
+
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
 
@@ -31,10 +40,16 @@ app.MapCarter();
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
-{	
-	options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
 app.UseExceptionHandler(options => { });
+
+app.UseHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 app.Run();
