@@ -15,7 +15,7 @@ public class GetProductsEndpoint : ICarterModule
         .WithName("GetProducts")
         .Produces<GetProductsResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .WithSummary("Get all products in the catalog.")
-        .WithDescription("Retrieves list of available products.");
+        .WithSummary("Get all products")
+        .WithDescription("Retrieves list of available products in catalog.");
     }
 }

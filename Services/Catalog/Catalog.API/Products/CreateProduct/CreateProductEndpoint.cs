@@ -21,7 +21,7 @@ public class CreateProductEndpoint : ICarterModule
         .WithName("CreateProduct")
         .Produces<CreateProductResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-		.WithSummary("Add a product to the catalog")
-		.WithDescription("Create a new product");             
+		.WithSummary("Create a new product")
+		.WithDescription("Add a product to the catalog");             
     }
 }

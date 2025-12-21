@@ -1,4 +1,4 @@
-using JasperFx;
+using BuildingBlocks.ExceptionHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +17,9 @@ builder.Services.AddMarten(opts =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 var app = builder.Build();
 
@@ -29,5 +32,6 @@ app.UseSwaggerUI(options =>
 	options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
+app.UseExceptionHandler();
 
 app.Run();
