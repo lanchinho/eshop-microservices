@@ -1,14 +1,15 @@
-using BuildingBlocks.ExceptionHandler;
-
 var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container.
-builder.Services.AddCarter();
+var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config =>
 {
-	config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+	config.RegisterServicesFromAssembly(assembly);
 	config.LicenseKey = builder.Configuration.GetValue<string>("MediatR:LicenseKey");
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
+
+builder.Services.AddCarter();
 
 builder.Services.AddMarten(opts =>
 {
@@ -17,9 +18,10 @@ builder.Services.AddMarten(opts =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-
 
 var app = builder.Build();
 
@@ -32,6 +34,6 @@ app.UseSwaggerUI(options =>
 	options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
-app.UseExceptionHandler();
+app.UseExceptionHandler(options => { });
 
 app.Run();
