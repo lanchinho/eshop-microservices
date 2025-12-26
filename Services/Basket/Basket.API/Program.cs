@@ -4,6 +4,11 @@ var assembly = typeof(Program).Assembly;
 
 builder.Services
     .AddScoped<IBasketRepository, BasketRepository>()
+    .Decorate<IBasketRepository, CachedBasketRepository>()
+    .AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    })
     .AddMarten(opts =>
      {
          opts.Connection(builder.Configuration.GetConnectionString("Database")!);

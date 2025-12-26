@@ -1,6 +1,4 @@
-﻿using Basket.API.Basket.StoreBasket;
-
-namespace Basket.API.Basket.DeleteBasket;
+﻿namespace Basket.API.Basket.DeleteBasket;
 
 public record DeleteBasketResponse(bool IsSuccess);
 
@@ -15,7 +13,7 @@ public class DeleteBasketEndpoints : ICarterModule
             return Results.Ok(response);
         })
         .WithName("DeleteProduct")
-        .Produces<StoreBasketResponse>(StatusCodes.Status200OK)
+        .Produces<DeleteBasketResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .ProducesProblem(StatusCodes.Status404NotFound)
         .WithSummary("Delete a Product")
