@@ -1,3 +1,6 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
@@ -28,7 +31,10 @@ builder.Services
     .AddSwaggerGen()
     .AddValidatorsFromAssembly(assembly)
     .AddExceptionHandler<GlobalExceptionHandler>()
-    .AddProblemDetails();
+    .AddProblemDetails()
+    .AddHealthChecks()
+        .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
+        .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
 
 var app = builder.Build();
 
@@ -41,5 +47,9 @@ app.UseSwaggerUI(options =>
 });
 
 app.UseExceptionHandler(options => { });
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
