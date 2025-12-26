@@ -1,6 +1,15 @@
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
+
+builder.Services
+    .AddScoped<IBasketRepository, BasketRepository>()
+    .AddMarten(opts =>
+     {
+         opts.Connection(builder.Configuration.GetConnectionString("Database")!);
+         opts.Schema.For<ShoppingCart>().Identity(x => x.UserName);
+     }).UseLightweightSessions();
+
 builder.Services
     .AddMediatR(config =>
     {
@@ -25,5 +34,7 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
+
+app.UseExceptionHandler(options => { });
 
 app.Run();
