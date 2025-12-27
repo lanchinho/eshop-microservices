@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Visual Studio settings...
 .vs/
+/Services/Discount/Discount.GRPC/discountdb-shm
+/Services/Discount/Discount.GRPC/discountdb-wal
