@@ -12,6 +12,12 @@
   <Folder Name="/Services/Discount/">
     <Project Path="Services/Discount/Discount.GRPC/Discount.GRPC.csproj" Id="8350daac-460f-43b9-aa76-4aaeffe00892" />
   </Folder>
+  <Folder Name="/Services/Ordering/">
+    <Project Path="Services/Ordering/Ordering.API/Ordering.API.csproj" Id="2af1b4d1-6958-4c4a-8133-f3492db1dacf" />
+    <Project Path="Services/Ordering/Ordering.Application/Ordering.Application.csproj" Id="cfbe3e0d-5f52-4eef-91e5-dea10f6ac44f" />
+    <Project Path="Services/Ordering/Ordering.Domain/Ordering.Domain.csproj" Id="d0a616bb-5a97-4220-98c7-aa3faf06cda1" />
+    <Project Path="Services/Ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj" Id="cc0fd62f-5755-45e1-a5cf-3f86fe9e6db5" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
   </Folder>
