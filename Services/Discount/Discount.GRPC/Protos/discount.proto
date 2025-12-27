@@ -19,15 +19,28 @@ service DiscountProtoService{
 	rpc CreateDiscount (CreateDiscountRequest) returns (CouponModel){
 		option (google.api.http) ={			
 			post: "/discount",
-			body: "coupon"
+			body: "coupon"			
 		};
 	}
-	rpc UpdateDiscount (UpdateDiscountRequest) returns (CouponModel);
-	rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
+
+	//Update discount information
+	rpc UpdateDiscount (UpdateDiscountRequest) returns (CouponModel){
+		option (google.api.http) ={			
+			put: "/discount/update",
+			body: "coupon"			
+		};
+	}
+
+	//Delete discount by productName
+	rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse){
+		option (google.api.http) ={
+		delete: "/discount/{productName}"
+		};
+	}
 }
 
 message GetDiscountRequest{
-	//Product with discount
+	//Name of the product with discount
 	string productName = 1;
 }
 
