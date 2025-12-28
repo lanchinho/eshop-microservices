@@ -1,10 +1,11 @@
-﻿using Ordering.Domain.Models;
+﻿using Ordering.Application.Data;
+using Ordering.Domain.Models;
 using System.Reflection;
 
 namespace Ordering.Infrastructure.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : DbContext(options)
+    : DbContext(options), IApplicationDbContext
 {
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<Product> Products => Set<Product>();
