@@ -5,7 +5,7 @@ public class Customer : Entity<CustomerId>
     public string Name { get; private set; } = default!;
     public string Email { get; private set; } = default!;
 
-    public static Customer Creatre(CustomerId id, string name, string email)
+    public static Customer Create(CustomerId id, string name, string email)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentException.ThrowIfNullOrWhiteSpace(email);
