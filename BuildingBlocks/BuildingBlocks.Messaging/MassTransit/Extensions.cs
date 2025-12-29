@@ -15,7 +15,7 @@ public static class Extensions
             config.SetKebabCaseEndpointNameFormatter();
 
             if (assembly != null)
-                config.AddConsumers(assembly);
+                config.AddConsumers(assembly); //cadastrar os consumers
 
             config.UsingRabbitMq((context, configurator) =>
             {

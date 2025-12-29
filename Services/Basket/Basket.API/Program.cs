@@ -1,6 +1,7 @@
 using Discount.GRPC;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using BuildingBlocks.Messaging.MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddValidatorsFromAssembly(assembly)
+    .AddMessageBroker(builder.Configuration)
     .AddExceptionHandler<GlobalExceptionHandler>()
     .AddProblemDetails()
     .AddHealthChecks()
