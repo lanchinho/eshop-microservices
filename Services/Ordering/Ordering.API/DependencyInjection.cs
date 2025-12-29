@@ -1,4 +1,6 @@
-﻿namespace Ordering.API;
+﻿using BuildingBlocks.Exceptions.Handler;
+
+namespace Ordering.API;
 
 public static class DependencyInjection
 {
@@ -7,7 +9,9 @@ public static class DependencyInjection
         services
             .AddCarter()
             .AddEndpointsApiExplorer()
-            .AddSwaggerGen();
+            .AddSwaggerGen()
+            .AddExceptionHandler<GlobalExceptionHandler>()
+            .AddProblemDetails();
 
         return services;
     }
@@ -21,7 +25,8 @@ public static class DependencyInjection
            .UseSwaggerUI(options =>
            {
                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-           });
+           })
+           .UseExceptionHandler(options => { });
 
         return app;
     }
