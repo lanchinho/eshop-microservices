@@ -1,17 +1,20 @@
-﻿using BuildingBlocks.Exceptions.Handler;
+﻿using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Ordering.API;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApiServices(this IServiceCollection services)
+    public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services
             .AddCarter()
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
             .AddExceptionHandler<GlobalExceptionHandler>()
-            .AddProblemDetails();
+                .AddProblemDetails()
+            .AddHealthChecks()
+                .AddSqlServer(configuration.GetConnectionString("Database")!);
 
         return services;
     }
@@ -26,7 +29,11 @@ public static class DependencyInjection
            {
                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
            })
-           .UseExceptionHandler(options => { });
+           .UseExceptionHandler(options => { })
+           .UseHealthChecks("/health", new HealthCheckOptions
+           {
+               ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+           });
 
         return app;
     }
