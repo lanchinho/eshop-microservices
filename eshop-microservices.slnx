@@ -25,6 +25,9 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
   </Folder>
+  <Folder Name="/WebApps/">
+    <Project Path="WebApps/Shopping.Web/Shopping.Web.csproj" Id="e71ba03c-2037-4262-9093-37c64b7d5053" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
