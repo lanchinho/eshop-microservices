@@ -1,0 +1,85 @@
+﻿@page
+@model Shopping.Web.Pages.ProductListModel
+@{
+    ViewData["Title"] = "Product";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-page="Product">Category</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Model.SelectedCategory</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-4">
+        <aside class="col-12 col-sm-3">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white text-uppercase small">
+                    <i class="fa fa-list me-2" aria-hidden="true"></i> Categories
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    @foreach (var category in Model.CategoryList)
+                    {
+                        <li class="list-group-item">
+                            <a class="text-decoration-none d-block" asp-page="Product" asp-route-categoryId="@category">@category</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white text-uppercase small">Last product</div>
+                <div class="card-body">
+                    @{
+                        var last = Model.ProductList.LastOrDefault();
+                    }
+                    @if (last is not null)
+                    {
+                        <img asp-append-version="true" class="img-fluid rounded mb-2" src="~/images/product/@last.ImageFile" alt="@last.Name" />
+                        <h5 class="card-title mb-1">@last.Name</h5>
+                        <p class="card-text text-muted small mb-2">@last.Description</p>
+                        <p class="bloc_left_price">@Model.ProductList.LastOrDefault().Price $</p>
+                    }
+                </div>
+            </div>
+        </aside>
+
+        <section class="col">
+            <div class="row g-4">
+                @foreach (var product in Model.ProductList)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <partial name="_ProductItemPartial" model="@product" />
+                    </div>
+                }
+
+                <div class="col-12">
+                    <nav aria-label="Product pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="#">2 <span class="visually-hidden">(current)</span></a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
